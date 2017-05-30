@@ -35,7 +35,7 @@ public class GameOver {
         }
     }
 
-    public void update(){
+    public void update() {
 
         if (GamePanel.mouseX > GamePanel.WIDTH / 2 - buttonWidth / 2
                 && GamePanel.mouseX < GamePanel.WIDTH / 2 + buttonWidth / 2
@@ -47,7 +47,7 @@ public class GameOver {
         }
     }
 
-    public static boolean getState(){
+    public static boolean getState() {
         return state;
     }
 

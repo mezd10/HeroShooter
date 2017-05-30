@@ -15,8 +15,6 @@ public class Player {
     private int speed;
     private int health;
 
-    private Image hero;
-
     public static boolean up;
     public static boolean down;
     public static boolean left;
@@ -24,7 +22,7 @@ public class Player {
 
     public static boolean isFiring;
 
-    public Player(){
+    public Player() {
         x = GamePanel.WIDTH / 2;
         y = GamePanel.HEIGHT / 2;
         r = 10;
@@ -42,54 +40,46 @@ public class Player {
         right = false;
 
         isFiring = false;
-
-        images();
     }
 
-    private void images(){
-        try {
-            hero = ImageIO.read(getClass().getResource("Dudl_1.png"));
-        }catch (IOException e){
-
-        }
-    }
-
-    public double getX(){
+    public double getX() {
         return x;
     }
 
-    public double getY(){
+    public double getY() {
         return y;
     }
 
-    public int getR(){return r;}
-
-    public void hit(){
-        health --;
+    public int getR() {
+        return r;
     }
 
-    public boolean remove(){
-        if (health <= 0){
+    public void hit() {
+        health--;
+    }
+
+    public boolean remove() {
+        if (health <= 0) {
             return true;
         }
         return false;
     }
 
-    public void update(){
+    public void update() {
 
-        if (up && y > r){
+        if (up && y > r) {
             dy = -speed;
         }
-        if (down && y < GamePanel.HEIGHT - r){
+        if (down && y < GamePanel.HEIGHT - r) {
             dy = speed;
         }
-        if (left && x > r){
+        if (left && x > r) {
             dx = -speed;
         }
-        if (right && x < GamePanel.WIDTH - r){
+        if (right && x < GamePanel.WIDTH - r) {
             dx = speed;
         }
-        if(up && left || up && right || down && left || down && right){
+        if (up && left || up && right || down && left || down && right) {
             double angle = Math.toRadians(45);
             dy = dy * Math.sin(angle);
             dx = dx * Math.cos(angle);
@@ -101,13 +91,13 @@ public class Player {
         dy = 0;
         dx = 0;
 
-        if (isFiring){
+        if (isFiring) {
             GamePanel.bullets.add(new Bullet());
         }
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g) {
 
-            g.drawImage(hero, (int) (x - r), (int) (y - r), 40, 40, null);
+        g.drawImage(SelectionPlayer.getImage(), (int) (x - r), (int) (y - r), 40, 40, null);
     }
 }

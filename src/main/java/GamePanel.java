@@ -67,10 +67,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void run() {
 
+        state = STATES.MENUE;
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        selectionPlayer = new SelectionPlayer();
 
         player = new Player();
 
@@ -83,8 +85,6 @@ public class GamePanel extends JPanel implements Runnable {
         rounds = new Rounds();
 
         menue = new Menu();
-
-        selectionPlayer = new SelectionPlayer();
 
         pressed = false;
 
@@ -101,17 +101,17 @@ public class GamePanel extends JPanel implements Runnable {
                 gameDraw();
             }
 
-            if (state.equals(STATES.PLAY)) {
-                background.draw(g);
-                gameUpdate();
-                gameRender();
-                gameDraw();
-            }
-
             if (state.equals(STATES.SELECTIONPLAER)) {
 
                 selectionPlayer.update();
                 selectionPlayer.draw(g);
+                gameDraw();
+            }
+
+            if (state.equals(STATES.PLAY)) {
+                background.draw(g);
+                gameUpdate();
+                gameRender();
                 gameDraw();
             }
 
@@ -127,13 +127,10 @@ public class GamePanel extends JPanel implements Runnable {
                 gameOver.draw(g);
                 gameDraw();
                 if (Menu.getState()) { // еще не продумано до конца
-
-                   thread = new Thread();
-                    thread.start();
-                    background.draw(g);
-                    gameUpdate();
-                    gameRender();
-                    gameDraw();
+                    SwingUtilities.invokeLater(() -> {
+                        start();
+                    });
+                    return;
                 }
             }
 

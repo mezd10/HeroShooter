@@ -41,7 +41,7 @@ public class Menu {
                 && GamePanel.pressed) {
             GamePanel.state = GamePanel.STATES.PLAY;
 
-            if (GameOver.getState()){
+            if (GameOver.getState()) {
                 stateGameOver = true;
             }
 
@@ -56,7 +56,7 @@ public class Menu {
         }
     }
 
-    public static boolean getState(){
+    public static boolean getState() {
         return stateGameOver;
     }
 
