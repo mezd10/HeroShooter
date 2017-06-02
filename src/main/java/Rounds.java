@@ -12,6 +12,7 @@ public class Rounds {
 
     private int roundsMultiplier;
 
+
     public Rounds(){
         roundsNumber = 1;
         roundsMultiplier = 5;
@@ -21,7 +22,6 @@ public class Rounds {
         roundsTimerDiff = 0;
 
         roundsText = "R O U N D";
-
     }
 
     public void update(){
@@ -42,10 +42,18 @@ public class Rounds {
 
     public void createEnemies(){
         int enemyCount = roundsNumber * roundsMultiplier;
-        if (roundsNumber < 4){
+        if (roundsNumber <=  4){
             while (enemyCount > 0){
                 int rank = 1;
                 int type = 1;
+                GamePanel.enemies.add(new Enemy(type, rank));
+                enemyCount -= type * rank;
+            }
+        }
+        if (roundsNumber > 4){
+            while (enemyCount > 0){
+                int rank = 2;
+                int type = 2;
                 GamePanel.enemies.add(new Enemy(type, rank));
                 enemyCount -= type * rank;
             }

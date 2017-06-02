@@ -21,8 +21,6 @@ public class GamePanel extends JPanel implements Runnable {
     private double dividerFPS;
     private int sleepTime;
 
-    private static boolean stateGameOver;
-
     public static Player player;
     public static ArrayList<Bullet> bullets;
     public static ArrayList<Enemy> enemies;
@@ -71,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         selectionPlayer = new SelectionPlayer();
 
@@ -89,8 +88,6 @@ public class GamePanel extends JPanel implements Runnable {
         pressed = false;
 
         pause = new Pause();
-
-        gameOver = new GameOver(stateGameOver);
 
         while (true) {
 
@@ -126,7 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
                 gameOver.update();
                 gameOver.draw(g);
                 gameDraw();
-                if (Menu.getState()) { // еще не продумано до конца
+                if (Menu.getState()) {
                     SwingUtilities.invokeLater(() -> {
                         start();
                     });
@@ -196,8 +193,6 @@ public class GamePanel extends JPanel implements Runnable {
                         i--;
                         break;
                     }
-
-
                 }
             }
 
@@ -221,10 +216,6 @@ public class GamePanel extends JPanel implements Runnable {
                     enemies.remove(i);
                     i--;
                 }
-
-                /*if (player.remove()) {
-                    GamePanel.state = STATES.GAMEOVER;
-                }*/
             }
         }
 

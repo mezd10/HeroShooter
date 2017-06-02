@@ -10,6 +10,8 @@ public class Enemy {
     private int r;
 
     private Image enemy;
+    private Image enemy1;
+    private Image enemy2;
 
     private double speed;
     private double dx;
@@ -20,10 +22,10 @@ public class Enemy {
     private int type;
     private int rank;
 
-
     public Enemy(int type, int rank) {
         this.type = type;
         this.rank = rank;
+        images();
 
         switch (type) {
 
@@ -42,11 +44,12 @@ public class Enemy {
                         double angle = Math.toRadians(Math.random() * 360);
                         dx = Math.sin(angle) * speed;
                         dy = Math.cos(angle) * speed;
+                        enemy = enemy1;
                 }
 
-           /* case(2) :
-                switch (rank){
-                    case (1) :
+            case (2):
+                switch (rank) {
+                    case (2):
                         x = Math.random() * GamePanel.WIDTH;
                         y = 0;
 
@@ -59,16 +62,18 @@ public class Enemy {
                         double angle = Math.toRadians(Math.random() * 360);
                         dx = Math.sin(angle) * speed;
                         dy = Math.cos(angle) * speed;
-                }*/
+                        enemy = enemy2;
+                }
 
-                images();
+
 
         }
     }
 
     private void images() {
         try {
-            enemy = ImageIO.read(getClass().getResource("enemy.png"));
+            enemy1 = ImageIO.read(getClass().getResource("enemy.png"));
+            enemy2 = ImageIO.read(getClass().getResource("enemy2.png"));
         } catch (IOException e) {
 
         }
@@ -103,10 +108,10 @@ public class Enemy {
         x += dx;
         y += dy;
 
-        if (x < 0 && dx < 0) dx = -dx;
-        if (x > GamePanel.WIDTH && dx > 0) dx = -dx;
-        if (y < 0 && dy < 0) dy = -dy;
-        if (y > GamePanel.HEIGHT && dy > 0) dy = -dy;
+        if (x < r && dx < 0) dx = -dx;
+        if (x > GamePanel.WIDTH - r && dx > 0) dx = -dx;
+        if (y < r && dy < 0) dy = -dy;
+        if (y > GamePanel.HEIGHT - r && dy > 0) dy = -dy;
 
     }
 
