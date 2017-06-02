@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     private long timerFPS;
     private double dividerFPS;
     private int sleepTime;
+    private boolean ststeGameOver;
 
     public static Player player;
     public static ArrayList<Bullet> bullets;
@@ -88,6 +89,8 @@ public class GamePanel extends JPanel implements Runnable {
         pressed = false;
 
         pause = new Pause();
+
+        gameOver = new GameOver(ststeGameOver);
 
         while (true) {
 
