@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Bullet {
+public class Bullet implements Updateble, Draweble, Getter {
 
     private double x;
     private double y;
@@ -11,6 +11,7 @@ public class Bullet {
     private Color color;
 
     public Bullet() {
+
         x = GamePanel.player.getX();
         y = GamePanel.player.getY();
         r = 5;
@@ -32,10 +33,6 @@ public class Bullet {
         return r;
     }
 
-    public void update() {
-        y -= speed;
-    }
-
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillOval((int) x, (int) y, r, r);
@@ -46,5 +43,10 @@ public class Bullet {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void getUpdate() {
+        y -= speed;
     }
 }

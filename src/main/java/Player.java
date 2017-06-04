@@ -1,9 +1,8 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Player {
+public class Player implements Updateble, Draweble, Getter {
 
     private double x;
     private double y;
@@ -15,12 +14,7 @@ public class Player {
     private int speed;
     private int health;
 
-    public static boolean up;
-    public static boolean down;
-    public static boolean left;
-    public static boolean right;
-
-    public static boolean isFiring;
+    private MyKeyListener listener;
 
     public Player() {
         x = GamePanel.WIDTH / 2;
@@ -34,12 +28,8 @@ public class Player {
 
         health = 6;
 
-        up = false;
-        down = false;
-        left = false;
-        right = false;
+        listener = new MyKeyListener();
 
-        isFiring = false;
     }
 
     public double getX() {
@@ -65,21 +55,29 @@ public class Player {
         return false;
     }
 
-    public void update() {
+    public void draw(Graphics g) {
 
-        if (up && y > r) {
+        g.drawImage(SelectionPlayer.getImage(), (int) (x - r), (int) (y - r), 40, 40, null);
+    }
+
+    @Override
+    public void getUpdate() {
+
+
+        if (listener.up() && y > r) {
             dy = -speed;
         }
-        if (down && y < GamePanel.HEIGHT - r) {
+        if (listener.down() && y < GamePanel.HEIGHT - r) {
             dy = speed;
         }
-        if (left && x > r) {
+        if (listener.left() && x > r) {
             dx = -speed;
         }
-        if (right && x < GamePanel.WIDTH - r) {
+        if (listener.right() && x < GamePanel.WIDTH - r) {
             dx = speed;
         }
-        if (up && left || up && right || down && left || down && right) {
+        if (listener.up() && listener.left() || listener.up() && listener.right()
+                || listener.down() && listener.left() || listener.down() && listener.right()) {
             double angle = Math.toRadians(45);
             dy = dy * Math.sin(angle);
             dx = dx * Math.cos(angle);
@@ -90,14 +88,6 @@ public class Player {
 
         dy = 0;
         dx = 0;
-
-        if (isFiring) {
-            GamePanel.bullets.add(new Bullet());
-        }
-    }
-
-    public void draw(Graphics g) {
-
-        g.drawImage(SelectionPlayer.getImage(), (int) (x - r), (int) (y - r), 40, 40, null);
     }
 }
+

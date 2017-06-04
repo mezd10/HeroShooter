@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Rounds {
+public class Rounds implements Updateble, Draweble {
 
     private int roundsNumber;
 
@@ -13,7 +13,7 @@ public class Rounds {
     private int roundsMultiplier;
 
 
-    public Rounds(){
+    public Rounds() {
         roundsNumber = 1;
         roundsMultiplier = 5;
 
@@ -24,60 +24,60 @@ public class Rounds {
         roundsText = "R O U N D";
     }
 
-    public void update(){
-        if (GamePanel.enemies.size() == 0 && roundsTimer == 0){
-            roundsTimer = System.nanoTime();
-        }
-        if(roundsTimer > 0){
-            roundsTimerDiff += (System.nanoTime() - roundsTimer) / 1000000;
-            roundsTimer = System.nanoTime();
-        }
-        if (roundsTimerDiff > roundsDelay){
-            createEnemies();
-            roundsTimer = 0;
-            roundsTimerDiff = 0;
-        }
-
-    }
-
-    public void createEnemies(){
+    public void createEnemies() {
         int enemyCount = roundsNumber * roundsMultiplier;
-        if (roundsNumber <=  4){
-            while (enemyCount > 0){
+        if (roundsNumber <= 4) {
+            while (enemyCount > 0) {
                 int rank = 1;
                 int type = 1;
                 GamePanel.enemies.add(new Enemy(type, rank));
                 enemyCount -= type * rank;
             }
         }
-        if (roundsNumber > 4){
-            while (enemyCount > 0){
+        if (roundsNumber > 4) {
+            while (enemyCount > 0) {
                 int rank = 2;
                 int type = 2;
-                GamePanel.enemies.add(new Enemy(type, rank));
+                Enemy enemy = new Enemy(type, rank);
+                GamePanel.enemies.add(enemy);
                 enemyCount -= type * rank;
             }
         }
-        roundsNumber ++;
+        roundsNumber++;
     }
 
-    public boolean showRounds(){
-        if (roundsTimer != 0){
+    public boolean showRounds() {
+        if (roundsTimer != 0) {
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g) {
         double divider = roundsDelay / 180;
         double alpha = roundsTimerDiff / divider;
-        alpha = 255 *Math.sin(Math.toRadians(alpha));
+        alpha = 255 * Math.sin(Math.toRadians(alpha));
         if (alpha < 0) alpha = 0;
         if (alpha > 255) alpha = 255;
         g.setFont(new Font("Consolas", Font.ITALIC, 25));
-        g.setColor(new Color(100, 100, 255, (int)alpha));
+        g.setColor(new Color(100, 100, 255, (int) alpha));
         String s = roundsText + " - " + roundsNumber;
-        int length = (int)g.getFontMetrics().getStringBounds(s, g).getWidth();
+        int length = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
         g.drawString(s, GamePanel.WIDTH / 2 - length / 2, GamePanel.HEIGHT / 2);
+    }
+
+    @Override
+    public void getUpdate() {
+        if (GamePanel.enemies.size() == 0 && roundsTimer == 0) {
+            roundsTimer = System.nanoTime();
+        }
+        if (roundsTimer > 0) {
+            roundsTimerDiff += (System.nanoTime() - roundsTimer) / 1000000;
+            roundsTimer = System.nanoTime();
+        }
+        if (roundsTimerDiff > roundsDelay) {
+            createEnemies();
+            roundsTimer = 0;
+            roundsTimerDiff = 0;
+        }
     }
 }

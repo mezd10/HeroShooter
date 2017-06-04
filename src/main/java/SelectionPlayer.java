@@ -1,9 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
-public class SelectionPlayer {
+public class SelectionPlayer implements Updateble, Draweble {
 
     private int buttonWidth;
     private int buttonHeight;
@@ -13,6 +12,8 @@ public class SelectionPlayer {
     private Image heroFirst;
     private Image heroSecond;
     private static Image mainHero;
+
+    private ListenersMouse mouse;
 
     public SelectionPlayer() {
 
@@ -24,6 +25,8 @@ public class SelectionPlayer {
         images();
 
         mainHero = heroFirst;
+
+        mouse = new ListenersMouse();
     }
 
     private void images() {
@@ -34,32 +37,6 @@ public class SelectionPlayer {
         } catch (IOException e) {
 
         }
-    }
-
-    public void update() {
-
-        if (GamePanel.mouseX > 0
-                && GamePanel.mouseX < buttonWidth
-                && GamePanel.mouseY > 0
-                && GamePanel.mouseY < buttonHeight
-                && GamePanel.pressed) {
-
-            mainHero = heroFirst;
-            GamePanel.state = GamePanel.STATES.MENUE;
-
-        }
-
-        if (GamePanel.mouseX > 100
-                && GamePanel.mouseX < buttonWidth + 100
-                && GamePanel.mouseY > 0
-                && GamePanel.mouseY < buttonHeight
-                && GamePanel.pressed) {
-
-            mainHero = heroSecond;
-            GamePanel.state = GamePanel.STATES.MENUE;
-
-        }
-
     }
 
     public static Image getImage() {
@@ -76,5 +53,29 @@ public class SelectionPlayer {
         g.setColor(color);
         g.drawRect(100, 0, buttonWidth, buttonHeight);
         g.drawImage(heroSecond, 120, 8, 40, 40, null);
+    }
+
+    @Override
+    public void getUpdate() {
+        if (mouse.mouseX() > 0
+                && mouse.mouseX() < buttonWidth
+                && mouse.mouseY() > 0
+                && mouse.mouseY() < buttonHeight
+                && mouse.pressed()) {
+
+            mainHero = heroFirst;
+            GamePanel.state = GamePanel.STATES.MENU;
+
+        }
+
+        if (mouse.mouseX() > 100
+                && mouse.mouseX() < buttonWidth + 100
+                && mouse.mouseY() > 0
+                && mouse.mouseY() < buttonHeight
+                && mouse.pressed()) {
+
+            mainHero = heroSecond;
+            GamePanel.state = GamePanel.STATES.MENU;
+        }
     }
 }

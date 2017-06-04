@@ -1,5 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class MainFrame extends JFrame {
 
@@ -7,25 +10,6 @@ public class MainFrame extends JFrame {
         super("HeroShooter");
 
         GamePanel panel = new GamePanel();
-         // Думаю добавлять ToolBar или нет
-        //addKeyListener(new Listeners());
-
-        /*JButton newGame = new JButton("Restart");
-        newGame.setRolloverEnabled(true);
-        newGame.setBorder(new EmptyBorder(5,5,5,5));
-        newGame.addMouseListener(new ListenersMouse(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                new Main().newGame();
-            }
-        });
-
-        JToolBar toolBar = new JToolBar();
-        toolBar.setPreferredSize(new Dimension(50,30));
-        toolBar.add(newGame);
-        toolBar.setFloatable(false);
-
-        getContentPane().add(toolBar, BorderLayout.NORTH);*/
 
         JPanel field = new GamePanel();
 
@@ -36,4 +20,40 @@ public class MainFrame extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+}
+
+interface Updateble {
+    void getUpdate();
+}
+
+interface Draweble {
+    void draw(Graphics g);
+}
+
+interface Getter {
+    double getX();
+
+    double getY();
+
+    int getR();
+}
+
+interface MainPlayer {
+    boolean up();
+
+    boolean down();
+
+    boolean left();
+
+    boolean right();
+
+    boolean isFiring();
+}
+
+interface MouseCoordinates {
+    int mouseX();
+
+    int mouseY();
+
+    boolean pressed();
 }

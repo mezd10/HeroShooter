@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Background {
+public class Background implements Draweble {
 
     private Image fon1;
 

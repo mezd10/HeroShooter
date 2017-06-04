@@ -1,8 +1,8 @@
 import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.IOException;
+import java.awt.*;
+import java.io.IOException;
 
-public class Menu {
+public class Menu implements Updateble, Draweble {
 
     private final int buttonWidth = 400;
     private final int buttonHeight = 60;
@@ -10,7 +10,7 @@ public class Menu {
     private String buttonPlay;
     private String buttonSelectionPlayer;
 
-    private static boolean stateGameOver;
+    private ListenersMouse mouse;
 
     private Image fon;
 
@@ -22,7 +22,7 @@ public class Menu {
         buttonPlay = "Play";
         buttonSelectionPlayer = "Selection Player";
 
-        stateGameOver = false;
+        mouse = new ListenersMouse();
     }
 
     private void images() {
@@ -31,33 +31,6 @@ public class Menu {
         } catch (IOException e) {
 
         }
-    }
-
-    public void update() {
-        if (GamePanel.mouseX > GamePanel.WIDTH / 2 - buttonWidth / 2
-                && GamePanel.mouseX < GamePanel.WIDTH / 2 + buttonWidth / 2
-                && GamePanel.mouseY > GamePanel.HEIGHT / 2 - buttonHeight / 2
-                && GamePanel.mouseY < GamePanel.HEIGHT / 2 + buttonHeight / 2
-                && GamePanel.pressed) {
-            GamePanel.state = GamePanel.STATES.PLAY;
-
-            if (GameOver.getState()) {
-                stateGameOver = true;
-            }
-
-        } else if (GamePanel.mouseX > GamePanel.WIDTH / 2 - buttonWidth / 2
-                && GamePanel.mouseX < GamePanel.WIDTH / 2 + buttonWidth / 2
-                && GamePanel.mouseY > GamePanel.HEIGHT / 2 - buttonHeight / 2 + 80
-                && GamePanel.mouseY < GamePanel.HEIGHT / 2 + buttonHeight / 2 + 80
-                && GamePanel.pressed) {
-
-            GamePanel.state = GamePanel.STATES.SELECTIONPLAER;
-
-        }
-    }
-
-    public static boolean getState() {
-        return stateGameOver;
     }
 
     public void draw(Graphics g) {
@@ -75,6 +48,26 @@ public class Menu {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Tahoma", Font.ITALIC, 40));
         g.drawString(buttonSelectionPlayer, GamePanel.WIDTH / 2 - buttonWidth / 2 + 60, (GamePanel.HEIGHT / 2 - buttonHeight / 2) + 120);
+    }
+
+    @Override
+    public void getUpdate() {
+        if (mouse.mouseX() > GamePanel.WIDTH / 2 - buttonWidth / 2
+                && mouse.mouseX() < GamePanel.WIDTH / 2 + buttonWidth / 2
+                && mouse.mouseY() > GamePanel.HEIGHT / 2 - buttonHeight / 2
+                && mouse.mouseY() < GamePanel.HEIGHT / 2 + buttonHeight / 2
+                && mouse.pressed()) {
+
+            GamePanel.state = GamePanel.STATES.PLAY;
+
+        } else if (mouse.mouseX() > GamePanel.WIDTH / 2 - buttonWidth / 2
+                && mouse.mouseX() < GamePanel.WIDTH / 2 + buttonWidth / 2
+                && mouse.mouseY() > GamePanel.HEIGHT / 2 - buttonHeight / 2 + 80
+                && mouse.mouseY() < GamePanel.HEIGHT / 2 + buttonHeight / 2 + 80
+                && mouse.pressed()) {
+
+            GamePanel.state = GamePanel.STATES.SELECTIONPLAER;
+        }
     }
 }
 

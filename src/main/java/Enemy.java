@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Enemy {
+public class Enemy extends TypeEnemy implements Updateble, Draweble, Getter {
 
     private double x;
     private double y;
@@ -23,52 +23,48 @@ public class Enemy {
     private int rank;
 
     public Enemy(int type, int rank) {
+        super(type, rank);
         this.type = type;
         this.rank = rank;
         images();
+        enemyCreate();
+    }
 
-        switch (type) {
+    @Override
+    void enemyCreate() {
+        if (type == 1 && rank == 1) {
+            x = Math.random() * GamePanel.WIDTH;
+            y = 0;
 
-            case (1):
-                switch (rank) {
-                    case (1):
-                        x = Math.random() * GamePanel.WIDTH;
-                        y = 0;
+            r = 10;
 
-                        r = 10;
+            speed = 4;
 
-                        speed = 4;
+            health = 2;
 
-                        health = 2;
+            double angle = Math.toRadians(Math.random() * 360);
+            dx = Math.sin(angle) * speed;
+            dy = Math.cos(angle) * speed;
+            enemy = enemy1;
+        }
 
-                        double angle = Math.toRadians(Math.random() * 360);
-                        dx = Math.sin(angle) * speed;
-                        dy = Math.cos(angle) * speed;
-                        enemy = enemy1;
-                }
+        if (type == 2 && rank == 2) {
+            x = Math.random() * GamePanel.WIDTH;
+            y = 0;
 
-            case (2):
-                switch (rank) {
-                    case (2):
-                        x = Math.random() * GamePanel.WIDTH;
-                        y = 0;
+            r = 15;
 
-                        r = 15;
+            speed = 6;
 
-                        speed = 6;
+            health = 4;
 
-                        health = 4;
-
-                        double angle = Math.toRadians(Math.random() * 360);
-                        dx = Math.sin(angle) * speed;
-                        dy = Math.cos(angle) * speed;
-                        enemy = enemy2;
-                }
-
-
-
+            double angle = Math.toRadians(Math.random() * 360);
+            dx = Math.sin(angle) * speed;
+            dy = Math.cos(angle) * speed;
+            enemy = enemy2;
         }
     }
+
 
     private void images() {
         try {
@@ -102,9 +98,13 @@ public class Enemy {
         health--;
     }
 
+    public void draw(Graphics g) {
 
-    public void update() {
+        g.drawImage(enemy, (int) (x - r), (int) (y - r), 2 * r, 2 * r, null);
+    }
 
+    @Override
+    public void getUpdate() {
         x += dx;
         y += dy;
 
@@ -112,12 +112,6 @@ public class Enemy {
         if (x > GamePanel.WIDTH - r && dx > 0) dx = -dx;
         if (y < r && dy < 0) dy = -dy;
         if (y > GamePanel.HEIGHT - r && dy > 0) dy = -dy;
-
-    }
-
-    public void draw(Graphics g) {
-
-        g.drawImage(enemy, (int) (x - r), (int) (y - r), 2 * r, 2 * r, null);
     }
 }
 

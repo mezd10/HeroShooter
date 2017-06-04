@@ -2,7 +2,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class ListenersMouse implements MouseListener, MouseMotionListener {
+public class ListenersMouse implements MouseListener, MouseMotionListener, MouseCoordinates {
+
+    private static int mouseX;
+    private static int mouseY;
+    private static boolean pressed;
 
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
@@ -13,15 +17,13 @@ public class ListenersMouse implements MouseListener, MouseMotionListener {
 
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            Player.isFiring = true;
-            GamePanel.pressed = true;
+            pressed = true;
         }
     }
 
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            Player.isFiring = false;
-            GamePanel.pressed = false;
+            pressed = false;
         }
 
     }
@@ -35,12 +37,29 @@ public class ListenersMouse implements MouseListener, MouseMotionListener {
     }
 
     public void mouseDragged(MouseEvent e) {
-        GamePanel.mouseX = e.getX();
-        GamePanel.mouseY = e.getY();
+
+        mouseX = e.getX();
+        mouseY = e.getY();
     }
 
     public void mouseMoved(MouseEvent e) {
-        GamePanel.mouseX = e.getX();
-        GamePanel.mouseY = e.getY();
+
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public int mouseX() {
+        return mouseX;
+    }
+
+    @Override
+    public int mouseY() {
+        return mouseY;
+    }
+
+    @Override
+    public boolean pressed() {
+        return pressed;
     }
 }

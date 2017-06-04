@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, Updateble {
 
     public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
@@ -20,31 +20,27 @@ public class GamePanel extends JPanel implements Runnable {
     private long timerFPS;
     private double dividerFPS;
     private int sleepTime;
-    private boolean ststeGameOver;
+
+    private MyKeyListener listener;
 
     public static Player player;
-    public static ArrayList<Bullet> bullets;
     public static ArrayList<Enemy> enemies;
-    public static Rounds rounds;
-    public static Menu menue;
-    public static SelectionPlayer selectionPlayer;
-    public static GameOver gameOver;
-    public static Pause pause;
-
-    public static boolean pressed;
+    private ArrayList<Bullet> bullets;
+    private Rounds rounds;
+    private Menu menu;
+    private SelectionPlayer selectionPlayer;
+    private GameOver gameOver;
+    private Pause pause;
 
     public enum STATES {
-        MENUE,
+        MENU,
         PLAY,
         SELECTIONPLAER,
         PAUSE,
         GAMEOVER
     }
 
-    public static STATES state = STATES.MENUE;
-
-    public static int mouseX;
-    public static int mouseY;
+    public static STATES state;
 
     public GamePanel() {
         super();
@@ -57,6 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
         FPS = 30;
         dividerFPS = 1000 / FPS;
 
+        listener = new MyKeyListener();
+
     }
 
     public void start() {
@@ -66,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void run() {
 
-        state = STATES.MENUE;
+        state = STATES.MENU;
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -84,49 +82,47 @@ public class GamePanel extends JPanel implements Runnable {
 
         rounds = new Rounds();
 
-        menue = new Menu();
-
-        pressed = false;
+        menu = new Menu();
 
         pause = new Pause();
 
-        gameOver = new GameOver(ststeGameOver);
+        gameOver = new GameOver();
 
         while (true) {
 
-            if (state.equals(STATES.MENUE)) {
+            if (state.equals(STATES.MENU)) {
 
-                menue.update();
-                menue.draw(g);
+                menu.getUpdate();
+                menu.draw(g);
                 gameDraw();
             }
 
             if (state.equals(STATES.SELECTIONPLAER)) {
 
-                selectionPlayer.update();
+                selectionPlayer.getUpdate();
                 selectionPlayer.draw(g);
                 gameDraw();
             }
 
             if (state.equals(STATES.PLAY)) {
                 background.draw(g);
-                gameUpdate();
+                getUpdate();
                 gameRender();
                 gameDraw();
             }
 
             if (state.equals(STATES.PAUSE)) {
 
-                pause.update();
+                pause.getUpdate();
                 pause.draw(g);
                 gameDraw();
             }
 
             if (state.equals(STATES.GAMEOVER)) {
-                gameOver.update();
+                gameOver.getUpdate();
                 gameOver.draw(g);
                 gameDraw();
-                if (Menu.getState()) {
+                if (GameOver.getState()) {
                     SwingUtilities.invokeLater(() -> {
                         start();
                     });
@@ -153,17 +149,21 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void init() {
-        addKeyListener(new Listeners());
+        addKeyListener(new MyKeyListener());
         addMouseMotionListener(new ListenersMouse());
         addMouseListener(new ListenersMouse());
     }
 
-    public void gameUpdate() {
+    @Override
+    public void getUpdate() {
+        player.getUpdate();
 
-        player.update();
+        if (listener.isFiring()) {
+            bullets.add(new Bullet());
+        }
 
         for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).update();
+            bullets.get(i).getUpdate();
             boolean remove = bullets.get(i).remove();
             if (remove) {
                 bullets.remove(i);
@@ -171,8 +171,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).update();
+        for (Enemy i : enemies) {
+            i.getUpdate();
         }
 
         for (int i = 0; i < enemies.size(); i++) {
@@ -198,8 +198,6 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-
-
         }
         for (int i = 0; i < enemies.size(); i++) {
             Enemy e = enemies.get(i);
@@ -226,7 +224,7 @@ public class GamePanel extends JPanel implements Runnable {
             GamePanel.state = STATES.GAMEOVER;
         }
 
-        rounds.update();
+        rounds.getUpdate();
     }
 
     public void gameRender() {

@@ -14,9 +14,5 @@ public class Main {
             }
         });
     }
-
-    public void newGame() {
-        mainFrame.dispose();
-        mainFrame = new MainFrame();
-    }
 }
+

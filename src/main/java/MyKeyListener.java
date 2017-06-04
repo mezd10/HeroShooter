@@ -1,79 +1,110 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Listeners implements KeyListener {
+public class MyKeyListener implements KeyListener, MainPlayer {
 
+    private static boolean up;
+    private static boolean down;
+    private static boolean left;
+    private static boolean right;
+    private static boolean isFiring;
+
+    @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
-
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_W) {
-            Player.up = true;
+            up = true;
         }
         if (key == KeyEvent.VK_S) {
-            Player.down = true;
+            down = true;
         }
         if (key == KeyEvent.VK_A) {
-            Player.left = true;
+            left = true;
         }
         if (key == KeyEvent.VK_D) {
-            Player.right = true;
+            right = true;
         }
         if (key == KeyEvent.VK_UP) {
-            Player.up = true;
+            up = true;
         }
         if (key == KeyEvent.VK_DOWN) {
-            Player.down = true;
+            down = true;
         }
         if (key == KeyEvent.VK_LEFT) {
-            Player.left = true;
+            left = true;
         }
         if (key == KeyEvent.VK_RIGHT) {
-            Player.right = true;
+            right = true;
         }
         if (key == KeyEvent.VK_K) {
-            Player.isFiring = true;
+            isFiring = true;
         }
         if (key == KeyEvent.VK_ESCAPE) {
             GamePanel.state = GamePanel.STATES.PAUSE;
         }
-
-
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_W) {
-            Player.up = false;
+            up = false;
         }
         if (key == KeyEvent.VK_S) {
-            Player.down = false;
+            down = false;
         }
         if (key == KeyEvent.VK_A) {
-            Player.left = false;
+            left = false;
         }
         if (key == KeyEvent.VK_D) {
-            Player.right = false;
+            right = false;
         }
         if (key == KeyEvent.VK_UP) {
-            Player.up = false;
+            up = false;
         }
         if (key == KeyEvent.VK_DOWN) {
-            Player.down = false;
+            down = false;
         }
         if (key == KeyEvent.VK_LEFT) {
-            Player.left = false;
+            left = false;
         }
         if (key == KeyEvent.VK_RIGHT) {
-            Player.right = false;
+            right = false;
         }
         if (key == KeyEvent.VK_K) {
-            Player.isFiring = false;
+            isFiring = false;
         }
+    }
+
+    @Override
+    public boolean up() {
+        return up;
+    }
+
+    @Override
+    public boolean down() {
+        return down;
+    }
+
+    @Override
+    public boolean left() {
+        return left;
+    }
+
+    @Override
+    public boolean right() {
+        return right;
+    }
+
+    @Override
+    public boolean isFiring() {
+        return isFiring;
     }
 }

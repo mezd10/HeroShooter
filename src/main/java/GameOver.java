@@ -1,8 +1,8 @@
 import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.IOException;
+import java.awt.*;
+import java.io.IOException;
 
-public class GameOver {
+public class GameOver implements Updateble {
 
     private Image fon;
     private Color color;
@@ -14,16 +14,18 @@ public class GameOver {
 
     private static boolean state;
 
+    private ListenersMouse mouse;
 
-    public GameOver(boolean state) {
 
-        this.state = state;
+    public GameOver() {
 
         images();
 
         color = Color.RED;
 
         buttonRoadToMenu = "M E N U ";
+
+        mouse = new ListenersMouse();
 
     }
 
@@ -32,18 +34,6 @@ public class GameOver {
             fon = ImageIO.read(getClass().getResource("fonGameOver.png"));
         } catch (IOException e) {
 
-        }
-    }
-
-    public void update() {
-
-        if (GamePanel.mouseX > GamePanel.WIDTH / 2 - buttonWidth / 2
-                && GamePanel.mouseX < GamePanel.WIDTH / 2 + buttonWidth / 2
-                && GamePanel.mouseY > GamePanel.HEIGHT / 2 - buttonHeight / 2 + 160
-                && GamePanel.mouseY < GamePanel.HEIGHT / 2 + buttonHeight / 2 + 160
-                && GamePanel.pressed) {
-            GamePanel.state = GamePanel.STATES.MENUE;
-            state = true;
         }
     }
 
@@ -60,5 +50,17 @@ public class GameOver {
         g.setFont(new Font("Tahoma", Font.ITALIC, 40));
         int lenght = (int) g.getFontMetrics().getStringBounds(buttonRoadToMenu, g).getWidth();
         g.drawString(buttonRoadToMenu, GamePanel.WIDTH / 2 - lenght / 2, GamePanel.HEIGHT / 2 + buttonHeight / 4 + 160);
+    }
+
+    @Override
+    public void getUpdate() {
+        if (mouse.mouseX() > GamePanel.WIDTH / 2 - buttonWidth / 2
+                && mouse.mouseX() < GamePanel.WIDTH / 2 + buttonWidth / 2
+                && mouse.mouseY() > GamePanel.HEIGHT / 2 - buttonHeight / 2 + 160
+                && mouse.mouseY() < GamePanel.HEIGHT / 2 + buttonHeight / 2 + 160
+                && mouse.pressed()) {
+            GamePanel.state = GamePanel.STATES.MENU;
+            state = true;
+        }
     }
 }
